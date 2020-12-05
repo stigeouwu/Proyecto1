@@ -5,6 +5,7 @@
  */
 package TipoEmpleados;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Objects;
  */
 public class UserFun extends Empleado{
 
-    public UserFun(String nombre, String cedula, String direccion, String correo, String telefono, String fecha, double sueldo, String usuario, String contraseña) {
+    public UserFun(String nombre, String cedula, String direccion, String correo, String telefono, LocalDate fecha, double sueldo, String usuario, String contraseña) {
         super(nombre, cedula, direccion, correo, telefono, fecha, sueldo, usuario, contraseña);
     }
 
@@ -37,7 +38,7 @@ public class UserFun extends Empleado{
         return telefono;
     }
 
-    public String getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 

@@ -51,12 +51,11 @@ public class Main {
         Adoptante adop0 = new Adoptante("pedro", "09557","jardines","aasdasd@espol.edu.ec","04234","perro","mtz","macho");
         f0.getUserRegistrados().add(adop0);
         System.out.println(g1.getFechaIngreso());
-        Empleado e1 = new UserFun("hola", "0997852", "jardines", "asda@xd", "045826", "11/06/2020", 400, "holauwu", "xdxd");
+        Empleado e1 = new UserFun("hola", "0997852", "jardines", "asda@xd", "045826", hoy, 400, "holauwu", "xdxd");
         f0.AgragarEmpleado(e1);
         Scanner sc = new Scanner(System.in);
         String user,pass= "";
         boolean salir= true;
-        System.out.println(f0.getAdoptantes().size());
         System.out.println(f0.getAnimalesAdoptados().size());
         System.out.println(f0.getAnimalesEnAdopccion().size());
         do{ 
@@ -231,8 +230,114 @@ public class Main {
             
         }
         if(eAF instanceof UserAdmi){
-            
-        }
+            do{ 
+            System.out.println("bienvenido uwu");
+            System.out.println("\t\tMENÚ PRINCIPAL");
+            System.out.println("1. Registrar Empleados.\n2. Consultar y registrar Veterinarias.\n3. Consultar y registrar Gasto Veterinaria.\n4. Calcular presupuesto mensual.\n5. Enviar correo a interesados.\n6. Cerrar sesion ");
+            sc.nextLine();
+            System.out.print("\nOpción>>> ");
+            int opm = sc.nextInt();
+            try{
+                sc.nextLine();
+                switch(opm){
+                case 1:   
+                        System.out.println("Registar nuevo empleado");
+                        System.out.println("Ingrese el nombre: ");
+                        String nombreemple = sc.nextLine();
+                        System.out.println("Ingrese la cedula: ");
+                        String cedulaemple= sc.nextLine();
+                        System.out.println("Ingrese la direccion: ");
+                        String direccionemple = sc.nextLine();
+                        System.out.println("Ingrese el telefono: ");
+                        String telefonoemple = sc.nextLine();
+                        System.out.println("Ingrese el correo electronico: ");
+                        String correoElectronicoemple = sc.nextLine();
+                        System.out.println("Ingrese el sueldo: ");
+                        Double sueldoemple = sc.nextDouble();
+                        sc.nextLine();
+                        String usuaremple = "";
+                        
+                        do{
+                            System.out.println("Ingrese el usuario que desea: ");
+                            usuaremple = sc.nextLine();
+                            if(f0.consultarUser(usuaremple)){
+                                System.out.println("Usuario ya registrado");
+                            }
+                            if(!f0.consultarUser(usuaremple)){
+                                System.out.println("Nombre de usuario disponible");
+                            }
+                        }while(f0.consultarUser(usuaremple));
+                        System.out.println("Ingrese la contraseña que desea: ");
+                        String contraemple= sc.nextLine();
+                        System.out.println("Desea que este usuario sea administrador (si/no): ");
+                        String regisemple= sc.nextLine();
+                        if(regisemple.equals("si")){
+                            System.out.println("Ingrese la cuentabancaria: ");
+                            String cuenta= sc.nextLine();
+                            Empleado eAdmi = new UserAdmi(cuenta,nombreemple,cedulaemple,direccionemple,correoElectronicoemple,telefonoemple,hoy,sueldoemple,usuaremple,contraemple);
+                            f0.getEmpleados().add(eAdmi);
+                        }
+                        if(regisemple.equals("no")){
+                            Empleado eFun = new UserFun(nombreemple,cedulaemple,direccionemple,correoElectronicoemple,telefonoemple,hoy,sueldoemple,usuaremple,contraemple);
+                            f0.getEmpleados().add(eFun);
+                        }
+                        break;
+                        
+                case 2:    
+                        System.out.println("1. Registar veterinarias\n2. Consultar veterinarias registradas");
+                        sc.nextLine();
+                        System.out.println("Ingreses lo que desea hacer: ");
+                        int opcvete = sc.nextInt();
+                        sc.nextLine();
+                        switch(opcvete){
+                            case 1:
+                                //fecha ingreso, nombre, raza, sexo (masculino o femenino), peso, edad, observaciones
+                                System.out.println("Por favor ingrese el nombre de la veterinaria: ");
+                                String nombrevete = sc.nextLine();
+                                System.out.println("Ingrese numero de contacto de la veterinaria: ");
+                                String numecontac = sc.nextLine();
+                                System.out.println("Ingrese el correo de la veterinaria: ");
+                                String correovete = sc.nextLine();
+                                Veterinaria vexp = new Veterinaria(nombrevete,numecontac,correovete);
+                                f0.getVeterinarias().add(vexp);
+                                sc.nextLine();
+                                    break;
+                            case 2:
+                                System.out.println(f0.consultarVete());
+                                break;
+                        }
+                        break;
+                case 3:
+                        System.out.println("1. Registar gastos\n2. Consultar gastos");
+                        sc.nextLine();
+                        System.out.println("Ingreses lo que desea hacer: ");
+                        int opcgast = sc.nextInt();
+                        sc.nextLine();
+                        switch(opcgast){
+                            case 1:
+                                System.out.println("Ingrese el dinero gastado: ");
+                                Double dinegast = sc.nextDouble();
+                                System.out.println("Ingrese el correo de la veterinaria: ");
+                                String correovete = sc.nextLine();
+                                System.out.println("Ingrese el codigo del animal: ");
+                                int codigoaniv = sc.nextInt();
+                                sc.nextInt();
+                                GastosVeterinaria vexp = new GastosVeterinaria(f0.consultarAni(codigoaniv),dinegast,hoy);
+                                f0.getGastosv().add(vexp);
+                                sc.nextLine();
+                                    break;
+                            case 2:
+                                System.out.println(f0.consultargastos());
+                                break;
+                        }
+                        break;
+                }
+            }catch (InputMismatchException error){
+                                System.out.println("\t>>DEBE INGRESAR UN NÚMERO<<");
+                                sc.next();
+            }
+            }while(salir);
+        
 //        Animal xd = f0.getAnimalesEnAdopccion().get(0);
 //        Gato gxd = (Gato)xd;
 //        System.out.println(gxd.getObservaciones()[0]);
@@ -251,5 +356,5 @@ public class Main {
         System.out.println(f0.Mostardatos("09557"));
     }
     
-    
+    }  
 }

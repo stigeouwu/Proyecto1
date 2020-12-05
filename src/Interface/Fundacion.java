@@ -13,6 +13,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Logger;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -21,22 +27,22 @@ import java.util.logging.Logger;
 public class Fundacion {
     private  ArrayList<Veterinaria> veterinarias;
     private  ArrayList<Empleado> empleados;
-    private  ArrayList<Adoptante> adoptantes;
     private  ArrayList<Animal> animalesTotal;
     private  ArrayList<Animal> animalesEnAdopccion;
     private  ArrayList<Animal> animalesAdoptados;
     private  ArrayList<Adoptante> userRegistrados;
     private  ArrayList<Adopccion> registroAdop;
+    private  ArrayList<GastosVeterinaria> gastosv;
 
     public Fundacion() {
         this.veterinarias = new ArrayList();
         this.empleados = new ArrayList();
-        this.adoptantes = new ArrayList();
         this.animalesEnAdopccion = new ArrayList();
         this.animalesAdoptados = new ArrayList();
         this.animalesTotal = new ArrayList();
         this.userRegistrados = new ArrayList();
         this.registroAdop = new ArrayList();
+        this.gastosv = new ArrayList();
     }
     
     
@@ -502,18 +508,65 @@ public class Fundacion {
                 adomod.setTelefono(telefono);
                 adomod.setCorreo(correo);  
             }
+        }    
+    }
+    public String consultarVete(){
+        String varv = "";
+        for(Veterinaria v: this.veterinarias){
+            String cadeani = "Nombre de veterinaria: %s        Numero de contacto de la veterinaria: %s        correo de la veterinaria: %s\n";
+            varv = varv + String.format(cadeani,v.getNombreV(),v.getNumeroContacto(),v.getCorreo());
         }
-        
+        return varv;
+    }
+    public Animal consultarAni(int codigo){
+        Animal aexpv = null;
+        for(Animal av: this.animalesTotal){
+            if(av instanceof Gato){
+            Gato g0 = (Gato)av; 
+                if(codigo == g0.getCodigo()){
+                    return av;
+                }
+            } 
+            if(av instanceof Perro){;
+            Perro p0 = (Perro)av;
+                if(codigo == p0.getCodigo()){
+                    return av;
+                }
+            }
+        }
+        return aexpv;
+    }
+    public String consultargastos(){
+        String varv = "";
+        String formattedString = "";
+        String nombreaniv = "";
+        String codigoaniv ="";
+        for(GastosVeterinaria v: this.gastosv){
+            String cadeani = "Fecha de la consulta: %s        Gastos del animal: %s        Nombre del animal: %s Codigo del animal: %s\n";
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+            formattedString = v.getFechaingre().format(formatter);
+            String cadenadou = String.valueOf(v.getGastosVeterinaria());
+            if(v.getRegisEnVeterinaria() instanceof Gato){
+                Animal aexveti = v.getRegisEnVeterinaria();
+                Gato gexv = (Gato)aexveti;
+                nombreaniv = gexv.getNombre();
+                codigoaniv = Integer.toString(gexv.getCodigo());
+            }
+            if(v.getRegisEnVeterinaria() instanceof Perro){
+                Animal aexveti = v.getRegisEnVeterinaria();
+                Perro pexv = (Perro)aexveti;
+                nombreaniv = pexv.getNombre();
+                codigoaniv = Integer.toString(pexv.getCodigo());
+            }
+            varv = varv + String.format(cadeani,formattedString,cadenadou,nombreaniv,codigoaniv);
+        }
+        return varv;
     }
     public ArrayList<Veterinaria> getVeterinarias() {
         return veterinarias;
     }
     public ArrayList<Empleado> getEmpleados() {
         return empleados;
-    }
-
-    public ArrayList<Adoptante> getAdoptantes() {
-        return adoptantes;
     }
 
     public ArrayList<Animal> getAnimalesTotal() {
@@ -535,6 +588,9 @@ public class Fundacion {
     public ArrayList<Adopccion> getRegistroAdop() {
         return registroAdop;
     }
-    
+
+    public ArrayList<GastosVeterinaria> getGastosv() {
+        return gastosv;
+    }
     
 }

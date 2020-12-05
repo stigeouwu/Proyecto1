@@ -5,6 +5,7 @@
  */
 package TipoEmpleados;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -17,12 +18,12 @@ public class Empleado {
     protected String direccion;
     protected String correo;
     protected String telefono;
-    protected String fecha;
+    protected LocalDate fecha;
     protected double sueldo;
     protected String usuario;
     protected String contraseña;
 
-    public Empleado(String nombre, String cedula, String direccion, String correo, String telefono, String fecha, double sueldo, String usuario, String contraseña) {
+    public Empleado(String nombre, String cedula, String direccion, String correo, String telefono, LocalDate fecha, double sueldo, String usuario, String contraseña) {
         this.nombre = nombre;
         this.cedula = cedula;
         this.direccion = direccion;
