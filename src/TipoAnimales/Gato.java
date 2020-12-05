@@ -50,7 +50,17 @@ public class Gato extends Animal {
         return codigo;
     }
 
-    
+    @Override
+    public double mostrarGastos(){
+        double presupuestoMengato = 0;
+        if(this.edad>=8){
+            presupuestoMengato = presupuestoMengato + 12.5;
+        }
+        if(this.edad<8){
+            presupuestoMengato = presupuestoMengato + 7.5;
+                }
+        return presupuestoMengato;
+    }
 
     
 

@@ -14,6 +14,7 @@ import java.util.Date;
  * @author stige
  */
 public class Animal {
+    
     protected LocalDate fechaIngreso;
     protected String nombre;
     protected String raza;
@@ -32,6 +33,9 @@ public class Animal {
         this.edad = edad;
         this.observaciones = observaciones;
         this.codigo = codigo;
+    }
+    public double mostrarGastos(){
+        return 0.0;
     }
 
     

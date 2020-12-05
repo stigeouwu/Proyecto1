@@ -31,6 +31,10 @@ public class Adoptante {
         this.razaDelAnimal = razaDelAnimal;
         this.sexoDelAnimal = sexoDelAnimal;
     }
+
+    public String getRazaDelAnimal() {
+        return razaDelAnimal;
+    }
       
     
 

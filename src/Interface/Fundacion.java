@@ -10,8 +10,10 @@ import TipoAnimales.*;
 import TipoEmpleados.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Properties;
 import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -45,6 +47,51 @@ public class Fundacion {
         this.gastosv = new ArrayList();
     }
     
+    public void inicializar(){
+        LocalDate hoy = LocalDate.now();
+        Veterinaria v0 = new Veterinaria("Veterinaria pablito","095578412","mega1xdxdxd@gmail.com");
+        this.getVeterinarias().add(v0);
+        TamanioPerro t1 = TamanioPerro.valueOf("GRANDE");
+        TamanioPerro t2 = TamanioPerro.valueOf("MEDIANO");
+        TamanioPerro t3 = TamanioPerro.valueOf("PEQUEÑO");
+        String[] obser1 = new String[2];
+        obser1[0] = "bonito";
+        obser1[1] ="gordito";
+        Animal a1 = new Perro(t1,hoy,"Boby", "MESTIZO", "MACHO", 15.5, 1,obser1, 1);
+        Animal a2 = new Perro(t2,hoy,"Firu", "PUG", "HEMBRA", 13.5, 1,obser1, 2);
+        Animal a3 = new Perro(t3,hoy,"Neil", "PUGGLE", "MACHO", 14.5, 1,obser1, 3);
+        this.getAnimalesEnAdopccion().add(a1);
+        this.getAnimalesEnAdopccion().add(a2);
+        this.getAnimalesEnAdopccion().add(a3);
+        String[] obser = new String[2];
+        obser[0] = "grande";
+        obser[1] ="gordito";
+        Animal a4 = new Gato(hoy,"michu", "MESTIZO", "Macho", 8.5, 1, obser, 4);
+        Animal a5 = new Gato(hoy,"coco", "PERSA", "HEMBRA", 8.5, 1, obser, 5);
+        Animal a6 = new Gato(hoy,"ninu", "PERSA", "HEMBRA", 8.5, 1, obser, 6);
+        this.getAnimalesAdoptados().add(a1);
+        this.getAnimalesTotal().add(a1);
+        this.getAnimalesTotal().add(a2);
+        this.getAnimalesTotal().add(a3);
+        this.getAnimalesTotal().add(a4);
+        this.getAnimalesTotal().add(a5);
+        this.getAnimalesTotal().add(a6);
+        Adoptante adop0 = new Adoptante("Stiven", "09557","jardines","sgquinde@espol.edu.ec","04234","gato","PERSA","MACHO");
+        Adoptante adopexp = new Adoptante("juan", "09558","jardines","mega3xdxdxd@gmail.com","04785","perro","MESTIZO","HEMBRA");
+        this.getUserRegistrados().add(adop0);
+        this.getUserRegistrados().add(adopexp);
+        Adopccion adoexp = new Adopccion(a5,adop0,1,hoy);
+        Adopccion adoexp2 = new Adopccion(a4,adopexp,2,hoy);
+        Empleado e1 = new UserFun("Carlos", "0997852", "jardines", "asda@xd", "045826", hoy, 400, "carlosj", "xdxd");
+        Empleado e2 = new UserAdmi("0898753","Francisco", "098632", "puerto azul", "mega4xdxdxd@gmailc.com", "047589", hoy, 600.50, "fracniscop", "123456");
+        this.empleados.add(e2);
+        this.empleados.add(e1);
+        this.registroAdop.add(adoexp);
+        this.registroAdop.add(adoexp2);
+        
+        GastosVeterinaria gastV = new GastosVeterinaria(a5,24.5,hoy);
+        this.gastosv.add(gastV);
+    }
     
     public Empleado consultarEmple(String user, String pass){
         Empleado e0 = null;
@@ -101,9 +148,7 @@ public class Fundacion {
         }
         return true;
     }
-    public void agragarAni(Animal a){
-        this.animalesTotal.add(a);
-    }
+    
     public void  agregarAnimalGato(String nombre, String raza, String sexo, double peso, int edad, String[] observaciones){
         int ulNum = this.animalesTotal.size() -1;
         int num = 0;
@@ -561,6 +606,132 @@ public class Fundacion {
             varv = varv + String.format(cadeani,formattedString,cadenadou,nombreaniv,codigoaniv);
         }
         return varv;
+        
+    }
+    
+    public String consultarGastosmen(){
+        String var = "";
+        double presupuestoMenEm = 0;
+        double presupuestoMengato = 0;
+        double presupuestoMenperro = 0;
+        double presupuestoMenveteri = 0;
+        
+        for(Empleado emgast: this.empleados){
+            if(emgast instanceof UserAdmi){
+                UserAdmi ua = (UserAdmi)emgast;
+                presupuestoMenEm = presupuestoMenEm + ua.getSueldo() + 150;
+            }
+            if(emgast instanceof UserFun){
+                UserFun ua = (UserFun)emgast;
+                presupuestoMenEm = presupuestoMenEm + ua.getSueldo() + 150;
+            }
+        }
+       
+        for(Animal aniadop: this.animalesEnAdopccion){
+            
+            if(aniadop instanceof Gato){
+                Gato gadop = (Gato)aniadop;
+                presupuestoMengato = presupuestoMengato + gadop.mostrarGastos() ;
+                                       
+            }
+            if(aniadop instanceof Perro){
+                Perro perdop = (Perro)aniadop;
+                presupuestoMenperro = presupuestoMenperro + perdop.mostrarGastos() ;
+                
+            }
+        }
+        for(GastosVeterinaria emgast: this.gastosv){
+            LocalDate otrodia = emgast.getFechaingre();
+            LocalDate hoy = LocalDate.now();
+            long days = ChronoUnit.DAYS.between(otrodia, hoy);
+            if(days <= 30){
+                Animal aniem =emgast.getRegisEnVeterinaria(); 
+                if(aniem instanceof Perro){
+                    presupuestoMenperro = presupuestoMenperro + emgast.getGastosVeterinaria();
+                }
+                if(aniem instanceof Gato){ 
+                    presupuestoMengato = presupuestoMengato + emgast.getGastosVeterinaria();
+                }
+                presupuestoMenveteri = presupuestoMenveteri + emgast.getGastosVeterinaria();
+            }
+            
+            
+        }
+        double gastoTotal = presupuestoMenEm + presupuestoMengato + presupuestoMenperro;
+        String strpresupuestoMenEm = String.valueOf(presupuestoMenEm);
+        String strpresupuestoMengato = String.valueOf(presupuestoMengato);
+        String strpresupuestoMenperro = String.valueOf(presupuestoMenperro);
+        String strpresupuestoMenveteri = String.valueOf(presupuestoMenveteri);
+        String strgastoTotal = String.valueOf(gastoTotal);
+        String cadeani = "Gasto mensual en empleados: %s        Gasto mensual en gatos: %s        Gasto mensual en perros: %s        Gasto mensual en veterinarias: %s Gasto total: %s\n";
+        var =  String.format(cadeani,strpresupuestoMenEm,strpresupuestoMengato,strpresupuestoMenperro,strpresupuestoMenveteri,strgastoTotal);
+        return var;
+    }
+    public void enviarCorreo(){
+        Properties props = System.getProperties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.user", "fundacion4pataspoo@gmail.com");
+        props.put("mail.smtp.clave", "12345678POO");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.port", "587");
+        Session session = Session.getDefaultInstance(props);
+        MimeMessage message = new MimeMessage(session);
+        
+        try {
+            message.setFrom(new InternetAddress("fundacion4pataspoo@gmail.com"));
+            for(Adoptante adcorre: this.userRegistrados){
+                ArrayList<Animal> aniInte = this.consultarAnimales(adcorre.getTipoDeanimal(), adcorre.getSexoDelAnimal(),adcorre.getRazaDelAnimal());
+                InternetAddress emailAdoptante = new InternetAddress(adcorre.getCorreo());
+                message.addRecipient(Message.RecipientType.TO, emailAdoptante);
+                message.setSubject("Animales encontrados segun sus gustos");
+                if(aniInte.size()==0){
+                    message.setText("No se ha encontrado ni un animal a su gusto D:");
+                    Transport transport = session.getTransport("smtp");
+                    transport.connect("smtp.gmail.com", "fundacion4pataspoo@gmail.com", "12345678POO");
+                    transport.sendMessage(message, message.getAllRecipients());
+                    transport.close();
+                }
+                if(aniInte.size()!=0){
+                    String infoani = this.imprimirListaAni(aniInte);
+                    message.setSubject("Lista de animales encontrados");
+                    message.setText(infoani + "hola" );
+                    Transport transport = session.getTransport("smtp");
+                    transport.connect("smtp.gmail.com", "fundacion4pataspoo@gmail.com", "12345678POO");
+                    transport.sendMessage(message, message.getAllRecipients());
+                    transport.close();
+                    
+                    
+                }
+            } 
+        }
+        catch (MessagingException me) {
+            me.printStackTrace();
+        }
+    }
+    public boolean comprobarMail(String email){
+        int arroba = 0;
+        boolean valido = false;
+        for(int i=0; i<email.length(); i++){
+            if(email.charAt(i)=='@')
+                arroba++;
+        }
+        if(arroba >1)
+            return valido;
+        else
+            valido = true;
+        return valido;
+    }
+    public boolean verificarEmail(String email){
+        String[] dominios = {"google.com","outlook.com","yahoo.com","espol.edu.ec"};
+        int resultado = email.indexOf("@");
+        if(resultado != -1){
+            String [] splits = email.split("@");
+            if(splits.length >= 1){
+                return splits[1].equals(dominios[0])||splits[1].equals(dominios[1])||splits[1].equals(dominios[2])||splits[1].equals(dominios[3]);
+        }
+        }    
+        return false;
     }
     public ArrayList<Veterinaria> getVeterinarias() {
         return veterinarias;

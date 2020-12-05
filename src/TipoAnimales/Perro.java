@@ -57,7 +57,18 @@ public class Perro extends Animal{
         return tamaño;
     }
 
-
-    
-    
+    @Override
+    public double mostrarGastos(){
+        double presupuestoMenperro = 0;
+        if(this.tamaño.equals(TamanioPerro.valueOf("GRANDE"))){
+                    presupuestoMenperro = presupuestoMenperro + 40 +1;
+                }
+                if(this.tamaño.equals(TamanioPerro.valueOf("MEDIANO"))){
+                    presupuestoMenperro = presupuestoMenperro + 30 +1;
+                }
+                if(this.tamaño.equals(TamanioPerro.valueOf("PEQUEÑO"))){
+                    presupuestoMenperro = presupuestoMenperro + 20 +1;
+        }
+        return presupuestoMenperro;
+    }
 }
