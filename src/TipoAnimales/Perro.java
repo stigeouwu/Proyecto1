@@ -7,6 +7,8 @@ package TipoAnimales;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  *
@@ -70,5 +72,52 @@ public class Perro extends Animal{
                     presupuestoMenperro = presupuestoMenperro + 20 +1;
         }
         return presupuestoMenperro;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Perro other = (Perro) obj;
+        if (Double.doubleToLongBits(this.peso) != Double.doubleToLongBits(other.peso)) {
+            return false;
+        }
+        if (this.edad != other.edad) {
+            return false;
+        }
+        if (this.codigo != other.codigo) {
+            return false;
+        }
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.raza, other.raza)) {
+            return false;
+        }
+        if (!Objects.equals(this.sexo, other.sexo)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechaIngreso, other.fechaIngreso)) {
+            return false;
+        }
+        if (!Arrays.deepEquals(this.observaciones, other.observaciones)) {
+            return false;
+        }
+        if (this.tamaño != other.tamaño) {
+            return false;
+        }
+        return true;
     }
 }

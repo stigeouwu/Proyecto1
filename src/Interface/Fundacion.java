@@ -60,9 +60,11 @@ public class Fundacion {
         Animal a1 = new Perro(t1,hoy,"Boby", "MESTIZO", "MACHO", 15.5, 1,obser1, 1);
         Animal a2 = new Perro(t2,hoy,"Firu", "PUG", "HEMBRA", 13.5, 1,obser1, 2);
         Animal a3 = new Perro(t3,hoy,"Neil", "PUGGLE", "MACHO", 14.5, 1,obser1, 3);
+        Animal a7 = new Gato(hoy,"Neil", "PUGGLE", "MACHO", 14.5, 1,obser1, 7);
         this.getAnimalesEnAdopccion().add(a1);
         this.getAnimalesEnAdopccion().add(a2);
         this.getAnimalesEnAdopccion().add(a3);
+        this.getAnimalesEnAdopccion().add(a7);
         String[] obser = new String[2];
         obser[0] = "grande";
         obser[1] ="gordito";
@@ -76,8 +78,11 @@ public class Fundacion {
         this.getAnimalesTotal().add(a4);
         this.getAnimalesTotal().add(a5);
         this.getAnimalesTotal().add(a6);
+        this.getAnimalesTotal().add(a7);
         Adoptante adop0 = new Adoptante("Stiven", "09557","jardines","sgquinde@espol.edu.ec","04234","gato","PERSA","MACHO");
         Adoptante adopexp = new Adoptante("juan", "09558","jardines","mega3xdxdxd@gmail.com","04785","perro","MESTIZO","HEMBRA");
+        Adoptante sinregis = new Adoptante("car", "09857","jardines","sgquinde@espol.edu.ec","04234","perro","MEZTIZO","MACHO");
+        this.userRegistrados.add(sinregis);
         this.getUserRegistrados().add(adop0);
         this.getUserRegistrados().add(adopexp);
         Adopccion adoexp = new Adopccion(a5,adop0,1,hoy);
@@ -111,8 +116,27 @@ public class Fundacion {
         }
         return e0;
     }
-    public void AgragarEmpleado(Empleado e){
-        this.empleados.add(e);
+    public void eliminarAniamlAdop(Animal eliani){
+        for(Animal lisadop: this.animalesTotal){
+            if(lisadop instanceof Gato){
+                if(eliani instanceof Gato){
+                    Gato g1 = (Gato)eliani;
+                    Gato g2 = (Gato)lisadop;
+                    if(g1.equals(g2)){
+                        this.animalesEnAdopccion.remove(this.animalesEnAdopccion.indexOf(lisadop));
+                }
+                }
+            }
+            if(lisadop instanceof Perro){
+                if(eliani instanceof Perro){
+                    Perro p1 = (Perro)eliani;
+                    Perro p2 = (Perro)lisadop;
+                    if(p1.equals(p2)){
+                        this.animalesEnAdopccion.remove(this.animalesEnAdopccion.indexOf(lisadop));
+                    }
+                }
+            }
+        }
     }
     public boolean consultarUser(String user){
         for(Empleado e: this.empleados){
@@ -419,6 +443,24 @@ public class Fundacion {
         }
         return false;
     }
+    public boolean ValidarAnimalNoDentro(int codigo){
+        for( Animal an: this.animalesTotal ){
+            if(an instanceof Gato){
+                Gato g = (Gato)an;
+                if(codigo == g.getCodigo()){
+                return true;
+                }
+            }
+            if(an instanceof Perro){
+                Perro p = (Perro)an;
+                if(codigo == p.getCodigo()){
+                return true;
+                }
+            }
+            
+        }
+        return false;
+    }
     public Adoptante buscarAdop(String cedula){
         Adoptante a0 = null;
         for(Adoptante a: this.userRegistrados){
@@ -456,7 +498,8 @@ public class Fundacion {
         num = num + adopex.getcodigo();
         Adopccion a = new Adopccion(ani,ad, num +1,adhoy);
         this.registroAdop.add(a);
-    }
+        this.eliminarAniamlAdop(ani);
+    }  
     public ArrayList<Adopccion> voltearLista(){
         ArrayList<Adopccion> nwlist= new ArrayList();
         int numli = this.registroAdop.size()-1;
@@ -709,27 +752,26 @@ public class Fundacion {
             me.printStackTrace();
         }
     }
-    public boolean comprobarMail(String email){
-        int arroba = 0;
-        boolean valido = false;
-        for(int i=0; i<email.length(); i++){
-            if(email.charAt(i)=='@')
-                arroba++;
-        }
-        if(arroba >1)
-            return valido;
-        else
-            valido = true;
-        return valido;
-    }
+
     public boolean verificarEmail(String email){
-        String[] dominios = {"google.com","outlook.com","yahoo.com","espol.edu.ec"};
+        String[] dominios = {"gmail.com","outlook.com","yahoo.com","espol.edu.ec"};
         int resultado = email.indexOf("@");
         if(resultado != -1){
             String [] splits = email.split("@");
-            if(splits.length >= 1){
-                return splits[1].equals(dominios[0])||splits[1].equals(dominios[1])||splits[1].equals(dominios[2])||splits[1].equals(dominios[3]);
-        }
+            if(splits.length == 2){
+                if(splits[1].equals(dominios[0])){
+                    return true;
+                }
+                if(splits[1].equals(dominios[1])){
+                    return true;
+                }
+                if(splits[1].equals(dominios[2])){
+                    return true;
+                }
+                if(splits[1].equals(dominios[3])){
+                    return true;
+                }
+            }
         }    
         return false;
     }
